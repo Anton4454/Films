@@ -1,19 +1,19 @@
 package com.example.films.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.films.*
-import com.example.films.ui.dashboard.DashboardViewModel
-import com.google.android.material.snackbar.Snackbar
+import com.example.films.ui.ClickListener.RecyclerItemClickListener
+import com.example.films.ui.FilmPageActivity.FilmPageActivity
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_films.*
 import kotlinx.coroutines.GlobalScope
@@ -25,7 +25,7 @@ class HomeFragment : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: FilmsAdapter
+    private lateinit var adapter: FilmAdapter
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var jsonFilms: Response
     private var mHandler = Handler()
@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
         return root
     }
 
-    private fun createRecyclerView(adapter: FilmsAdapter) {
+    private fun createRecyclerView(adapter: FilmAdapter) {
         linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = linearLayoutManager
@@ -53,17 +53,17 @@ class HomeFragment : Fragment() {
         recyclerView.layoutManager = gridLayoutManager
         recyclerView.adapter = adapter
 
-        /*recyclerView.addOnItemTouchListener(
+        recyclerView.addOnItemTouchListener(
             RecyclerItemClickListener(
-                this,
+                this.context,
                 recyclerView,
                 object : RecyclerItemClickListener.OnItemClickListener {
                     override fun onItemClick(view: View?, position: Int) {
                         val showPhotoIntent =
-                            Intent(this@MainActivity, PhotoPageActivity::class.java)
+                            Intent(this, FilmPageActivity::class.java)
                         showPhotoIntent.putExtra(
-                            RecyclerAdapter.PhotoHolder.PHOTO_KEY,
-                            auth.getPhotoUrl(jsonImages.photos?.photo?.get(position))
+                            FilmAdapter.PhotoHolder.FILM_KEY,
+                            jsonFilms?.results?.get(position)?.posterPath
                         )
 
                         val photoPageActivity = PhotoPageActivity()
@@ -71,6 +71,7 @@ class HomeFragment : Fragment() {
                             view?.findViewById(R.id.album),
                             photoPageActivity.VIEW_NAME_HEADER_IMAGE
                         )
+
                         val activityOptions: ActivityOptionsCompat =
                             ActivityOptionsCompat.makeSceneTransitionAnimation(
                                 this@MainActivity,
@@ -84,15 +85,18 @@ class HomeFragment : Fragment() {
                         )
                     }
 
-                    override fun onLongItemClick(view: View?, position: Int) {4}
+                    override fun onLongItemClick(view: View?, position: Int) {
+                        TODO("Not yet implemented")
+                    }
+
                 })
-        )*/
+        )
     }
 
     private fun downloadByUrl() {
         GlobalScope.launch {
             var response: String =
-                URL("https://api.themoviedb.org/3/movie/popular?api_key=d866b8cb9d02a5fc365da1327bc3f464&language=ru&page=1")
+                URL("https://api.themoviedb.org/3/movie/now_playing?api_key=d866b8cb9d02a5fc365da1327bc3f464&language=ru&page=1")
                     .readText()
             val gson = Gson()
             jsonFilms = gson.fromJson(response, Response::class.java)
@@ -105,7 +109,7 @@ class HomeFragment : Fragment() {
             if (jsonFilms.results?.size!! < 20) {
                 mHandler.postDelayed(this, 100)
             } else {
-                adapter = FilmsAdapter(jsonFilms)
+                adapter = FilmAdapter(jsonFilms)
                 createRecyclerView(adapter)
             }
         }

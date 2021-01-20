@@ -5,8 +5,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.album_layout.view.*
 
-class FilmsAdapter(private val films: Response?) :
-    RecyclerView.Adapter<FilmsAdapter.PhotoHolder>() {
+class FilmAdapter(private val films: Response?) :
+    RecyclerView.Adapter<FilmAdapter.PhotoHolder>() {
     
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoHolder {
         var layoutInflater: LayoutInflater = LayoutInflater.from(parent.context)
