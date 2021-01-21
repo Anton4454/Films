@@ -68,6 +68,7 @@ class FilmAdapter(private val films: Response?) :
                     genres += ", " + getGenre(item!!)
             }
             view.genre.text = genres
+            view.overview.text = filmItem?.overview
             view.voteAverage.text = filmItem?.voteAverage.toString()
             view.voteCount.text = filmItem?.voteCount.toString()
 
