@@ -1,11 +1,13 @@
 package com.example.films.ui.home
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -53,20 +55,20 @@ class HomeFragment : Fragment() {
         recyclerView.layoutManager = gridLayoutManager
         recyclerView.adapter = adapter
 
-        recyclerView.addOnItemTouchListener(
+        /*recyclerView.addOnItemTouchListener(
             RecyclerItemClickListener(
                 this.context,
                 recyclerView,
                 object : RecyclerItemClickListener.OnItemClickListener {
                     override fun onItemClick(view: View?, position: Int) {
                         val showPhotoIntent =
-                            Intent(this, FilmPageActivity::class.java)
+                            Intent(this@HomeFragment, FilmPageActivity::class.java)
                         showPhotoIntent.putExtra(
                             FilmAdapter.PhotoHolder.FILM_KEY,
-                            jsonFilms?.results?.get(position)?.posterPath
+                            jsonFilms?.results?.get(position))
                         )
 
-                        val photoPageActivity = PhotoPageActivity()
+                        val photoPageActivity = FilmPageActivity()
                         val pair = AndroidPair<View, String>(
                             view?.findViewById(R.id.album),
                             photoPageActivity.VIEW_NAME_HEADER_IMAGE
@@ -79,7 +81,7 @@ class HomeFragment : Fragment() {
                             )
 
                         ActivityCompat.startActivity(
-                            this@MainActivity,
+                            this@HomeFragment,
                             showPhotoIntent,
                             activityOptions.toBundle()
                         )
@@ -90,7 +92,7 @@ class HomeFragment : Fragment() {
                     }
 
                 })
-        )
+        )*/
     }
 
     private fun downloadByUrl() {
