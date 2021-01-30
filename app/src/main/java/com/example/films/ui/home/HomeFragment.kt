@@ -1,26 +1,28 @@
 package com.example.films.ui.home
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
+import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.films.*
 import com.example.films.ui.ClickListener.RecyclerItemClickListener
-import com.example.films.ui.FilmPageActivity.FilmPageActivity
+import com.example.films.ui.FilmPage.FilmPageFragment
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_films.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.net.URL
+
 
 class HomeFragment : Fragment() {
 
@@ -47,6 +49,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun createRecyclerView(adapter: FilmAdapter) {
+        layoutAnimation(recyclerView)
         linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = linearLayoutManager
@@ -55,44 +58,30 @@ class HomeFragment : Fragment() {
         recyclerView.layoutManager = gridLayoutManager
         recyclerView.adapter = adapter
 
-        /*recyclerView.addOnItemTouchListener(
+        recyclerView.addOnItemTouchListener(
             RecyclerItemClickListener(
-                this.context,
+                context,
                 recyclerView,
                 object : RecyclerItemClickListener.OnItemClickListener {
                     override fun onItemClick(view: View?, position: Int) {
-                        val showPhotoIntent =
-                            Intent(this@HomeFragment, FilmPageActivity::class.java)
-                        showPhotoIntent.putExtra(
-                            FilmAdapter.PhotoHolder.FILM_KEY,
-                            jsonFilms?.results?.get(position))
-                        )
-
-                        val photoPageActivity = FilmPageActivity()
-                        val pair = AndroidPair<View, String>(
-                            view?.findViewById(R.id.album),
-                            photoPageActivity.VIEW_NAME_HEADER_IMAGE
-                        )
-
-                        val activityOptions: ActivityOptionsCompat =
-                            ActivityOptionsCompat.makeSceneTransitionAnimation(
-                                this@MainActivity,
-                                pair
+                        val fragment: Fragment = FilmPageFragment()
+                        var layout = R.layout.fragment_film_page
+                        activity!!.supportFragmentManager.commit {
+                            setCustomAnimations(
+                                R.anim.slide_in,
+                                R.anim.fade_out,
+                                R.anim.fade_in,
+                                R.anim.slide_out
                             )
-
-                        ActivityCompat.startActivity(
-                            this@HomeFragment,
-                            showPhotoIntent,
-                            activityOptions.toBundle()
-                        )
+                            replace(R.id.nav_host_fragment, fragment)
+                            addToBackStack(null)
+                        }
                     }
 
                     override fun onLongItemClick(view: View?, position: Int) {
-                        TODO("Not yet implemented")
                     }
-
                 })
-        )*/
+        )
     }
 
     private fun downloadByUrl() {
@@ -104,6 +93,15 @@ class HomeFragment : Fragment() {
             jsonFilms = gson.fromJson(response, Response::class.java)
             mHandler.postDelayed(parseIsReady, 0)
         }
+    }
+
+    private fun layoutAnimation(recyclerView: RecyclerView) {
+        var context = recyclerView.context
+        var layoutAnimationController =
+            AnimationUtils.loadLayoutAnimation(context, R.anim.layout_slide_right)
+        recyclerView.layoutAnimation = layoutAnimationController
+        recyclerView.adapter?.notifyDataSetChanged()
+        recyclerView.scheduleLayoutAnimation()
     }
 
     private val parseIsReady: Runnable = object : Runnable {

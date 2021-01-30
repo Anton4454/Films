@@ -49,7 +49,6 @@ class FilmAdapter(private val films: Response?) :
         fun bindPhoto(filmItem: ResultsItem?, position: Int){
             image =
                 "https://themoviedb.org/t/p/w600_and_h900_face" + filmItem?.posterPath
-            view.setBackgroundResource(R.drawable.white_border)
             Glide
                 .with(view.context)
                 .load(
@@ -68,7 +67,6 @@ class FilmAdapter(private val films: Response?) :
                     genres += ", " + getGenre(item!!)
             }
             view.genre.text = genres
-            view.overview.text = filmItem?.overview
             view.voteAverage.text = filmItem?.voteAverage.toString()
             view.voteCount.text = filmItem?.voteCount.toString()
 

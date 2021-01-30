@@ -9,17 +9,41 @@
         android:id="@+id/navigation_home"
         android:name="com.example.films.ui.home.HomeFragment"
         android:label="@string/title_films"
-        tools:layout="@layout/fragment_films" />
+        tools:layout="@layout/fragment_films">
+
+        <action
+            android:id="@+id/action_signInFragment_to_usersFragment"
+            app:destination="@id/navigation_home"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/main_nav_graph"
+            app:popUpToInclusive="true" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.films.ui.dashboard.DashboardFragment"
         android:label="@string/title_wanna_watch"
-        tools:layout="@layout/fragment_wanna_watch" />
+        tools:layout="@layout/fragment_wanna_watch">
+        <action
+            android:id="@+id/action_signInFragment_to_usersFragment"
+            app:destination="@id/navigation_home"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/main_nav_graph"
+            app:popUpToInclusive="true" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.films.ui.notifications.NotificationsFragment"
         android:label="@string/title_watched"
-        tools:layout="@layout/fragment_watched" />
+        tools:layout="@layout/fragment_watched">
+        <action
+            android:id="@+id/action_signInFragment_to_usersFragment"
+            app:destination="@id/navigation_home"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/main_nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>
