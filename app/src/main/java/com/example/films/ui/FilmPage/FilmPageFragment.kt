@@ -25,11 +25,9 @@ class FilmPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         root = inflater.inflate(R.layout.fragment_film_page, container, false)
-
-        root.btn.setOnClickListener {
+        /*root.btn.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
-        }
+        }*/
         return root
     }
-
 }

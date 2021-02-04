@@ -34,6 +34,7 @@ class HomeFragment : Fragment() {
     private lateinit var jsonFilms: Response
     private var mHandler = Handler()
     private lateinit var root: View
+    private val fragment: Fragment = FilmPageFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,8 +65,6 @@ class HomeFragment : Fragment() {
                 recyclerView,
                 object : RecyclerItemClickListener.OnItemClickListener {
                     override fun onItemClick(view: View?, position: Int) {
-                        val fragment: Fragment = FilmPageFragment()
-                        var layout = R.layout.fragment_film_page
                         activity!!.supportFragmentManager.commit {
                             setCustomAnimations(
                                 R.anim.slide_in,
@@ -112,6 +111,13 @@ class HomeFragment : Fragment() {
                 adapter = FilmAdapter(jsonFilms)
                 createRecyclerView(adapter)
             }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        activity?.supportFragmentManager?.commit {
+            remove(fragment)
         }
     }
 }
