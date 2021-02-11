@@ -59,13 +59,13 @@ class FilmAdapter(private val films: Response?) :
 
             view.title.text = filmItem?.title
             var genres : String = ""
-            for (item in filmItem?.genreIds!!){
+           /* for (item in filmItem?.genreIds!!){
                 if (genres.equals("")){
                     genres += getGenre(item!!)
                 }
                 else
                     genres += ", " + getGenre(item!!)
-            }
+            }*/
             view.genre.text = genres
             view.voteAverage.text = filmItem?.voteAverage.toString()
             view.voteCount.text = filmItem?.voteCount.toString()
