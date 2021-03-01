@@ -1,5 +1,6 @@
 package com.example.films
 
+import android.content.Intent
 import android.view.*
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -21,6 +22,9 @@ class FilmAdapter(private val films: Response?) :
 
     override fun getItemCount(): Int = films?.results?.size!!
 
+    override fun getItemId(position: Int): Long {
+        return super.getItemId(position)
+    }
     override fun onBindViewHolder(holder: PhotoHolder, position: Int) {
         val itemFilm = films?.results?.get(position)
         holder.bindPhoto(itemFilm, position)
@@ -37,9 +41,9 @@ class FilmAdapter(private val films: Response?) :
 
         override fun onClick(v: View) {
             val context = itemView.context
-            /*val showPhotoIntent = Intent(context, PhotoPageActivity::class.java)
+            val showPhotoIntent = Intent(context, PhotoPageActivity::class.java)
             showPhotoIntent.putExtra(PHOTO_KEY, stringUrl)
-            context.startActivity(showPhotoIntent)*/
+            context.startActivity(showPhotoIntent)
         }
 
         companion object {

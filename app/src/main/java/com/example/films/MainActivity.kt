@@ -25,10 +25,4 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-
-    fun getJson() : Response{
-        var intent = intent
-        return intent?.getParcelableExtra<Response>("response_list")!!
-    }
-
 }

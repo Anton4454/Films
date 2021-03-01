@@ -1,12 +1,10 @@
 package com.example.films.ui.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -15,7 +13,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.films.FilmAdapter
-import com.example.films.MainActivity
 import com.example.films.R
 import com.example.films.Response
 import com.example.films.ui.ClickListener.RecyclerItemClickListener
@@ -39,9 +36,9 @@ class HomeFragment : Fragment() {
     private val fragment: Fragment = FilmPageFragment()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
     ): View? {
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
@@ -104,14 +101,14 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun layoutAnimation(recyclerView: RecyclerView) {
+    /*private fun layoutAnimation(recyclerView: RecyclerView) {
         var context = recyclerView.context
         var layoutAnimationController =
             AnimationUtils.loadLayoutAnimation(context, R.anim.layout_slide_right)
         recyclerView.layoutAnimation = layoutAnimationController
         recyclerView.adapter?.notifyDataSetChanged()
         recyclerView.scheduleLayoutAnimation()
-    }
+    }*/
 
     private val parseIsReady: Runnable = object : Runnable {
         override fun run() {
