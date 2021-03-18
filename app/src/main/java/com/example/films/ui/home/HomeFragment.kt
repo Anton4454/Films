@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
@@ -116,6 +117,7 @@ class HomeFragment : Fragment() {
                 mHandler.postDelayed(this, 100)
             } else {
                 adapter = FilmAdapter(jsonFilms)
+                Toast.makeText(context, jsonFilms?.totalResults.toString(), Toast.LENGTH_SHORT).show()
                 createRecyclerView(adapter)
             }
         }
