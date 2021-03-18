@@ -4,6 +4,8 @@ import android.content.Intent
 import android.view.*
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.films.ui.FilmPage.FilmPageFragment
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.album_layout.view.*
 
 class FilmAdapter(private val films: Response?) :
@@ -41,8 +43,8 @@ class FilmAdapter(private val films: Response?) :
 
         override fun onClick(v: View) {
             val context = itemView.context
-            val showPhotoIntent = Intent(context, PhotoPageActivity::class.java)
-            showPhotoIntent.putExtra(PHOTO_KEY, stringUrl)
+            val showPhotoIntent = Intent(context, FilmPageFragment::class.java)
+            showPhotoIntent.putExtra(FILM_KEY, "324")
             context.startActivity(showPhotoIntent)
         }
 
@@ -60,9 +62,9 @@ class FilmAdapter(private val films: Response?) :
                 )
                 .override(400, 600)
                 .into(view.filmPhoto)
-
             view.title.text = filmItem?.title
             var genres : String = ""
+            
            /* for (item in filmItem?.genreIds!!){
                 if (genres.equals("")){
                     genres += getGenre(item!!)
@@ -70,6 +72,7 @@ class FilmAdapter(private val films: Response?) :
                 else
                     genres += ", " + getGenre(item!!)
             }*/
+
             view.genre.text = genres
             view.voteAverage.text = filmItem?.voteAverage.toString()
             view.voteCount.text = filmItem?.voteCount.toString()
