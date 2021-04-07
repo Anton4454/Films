@@ -35,7 +35,7 @@ class HomeFragment : Fragment() {
     private lateinit var root: View
     private var mHandler = Handler()
     private val fragment: Fragment = FilmPageFragment()
-
+    
     override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
