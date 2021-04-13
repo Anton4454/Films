@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.album_layout.view.*
 
 class FilmAdapter(private val films: Response?) :
     RecyclerView.Adapter<FilmAdapter.PhotoHolder>() {
-    
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoHolder {
         var layoutInflater: LayoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(
@@ -44,7 +44,7 @@ class FilmAdapter(private val films: Response?) :
         override fun onClick(v: View) {
             val context = itemView.context
             val showPhotoIntent = Intent(context, FilmPageFragment::class.java)
-            showPhotoIntent.putExtra(FILM_KEY, "324")
+
             context.startActivity(showPhotoIntent)
         }
 

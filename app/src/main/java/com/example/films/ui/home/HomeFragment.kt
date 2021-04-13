@@ -5,8 +5,8 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
@@ -24,6 +24,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.net.URL
 
+
 class HomeFragment : Fragment() {
 
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -35,11 +36,11 @@ class HomeFragment : Fragment() {
     private lateinit var root: View
     private var mHandler = Handler()
     private val fragment: Fragment = FilmPageFragment()
-    
+
     override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
@@ -48,6 +49,7 @@ class HomeFragment : Fragment() {
         downloadByUrl()
         return root
     }
+
 
     private fun createRecyclerView(adapter: FilmAdapter) {
         linearLayoutManager =
@@ -80,6 +82,11 @@ class HomeFragment : Fragment() {
                                 R.anim.fade_in,
                                 R.anim.slide_out
                             )
+
+                            val bundle = Bundle()
+                            bundle.putParcelable("films", jsonFilms.results?.get(position))
+                            bundle.putInt("position", position)
+                            fragment.setArguments(bundle)
                             replace(R.id.nav_host_fragment, fragment)
                             addToBackStack(null)
                         }
@@ -102,14 +109,14 @@ class HomeFragment : Fragment() {
         }
     }
 
-    /*private fun layoutAnimation(recyclerView: RecyclerView) {
+    private fun layoutAnimation(recyclerView: RecyclerView) {
         var context = recyclerView.context
         var layoutAnimationController =
             AnimationUtils.loadLayoutAnimation(context, R.anim.layout_slide_right)
         recyclerView.layoutAnimation = layoutAnimationController
         recyclerView.adapter?.notifyDataSetChanged()
         recyclerView.scheduleLayoutAnimation()
-    }*/
+    }
 
     private val parseIsReady: Runnable = object : Runnable {
         override fun run() {
@@ -117,7 +124,6 @@ class HomeFragment : Fragment() {
                 mHandler.postDelayed(this, 100)
             } else {
                 adapter = FilmAdapter(jsonFilms)
-                Toast.makeText(context, jsonFilms?.totalResults.toString(), Toast.LENGTH_SHORT).show()
                 createRecyclerView(adapter)
             }
         }

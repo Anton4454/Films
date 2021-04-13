@@ -1,7 +1,11 @@
 package com.example.films
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
+import java.io.Serializable
 
+@Parcelize
 data class Response(
 
 	@field:SerializedName("page")
@@ -15,8 +19,9 @@ data class Response(
 
 	@field:SerializedName("total_results")
 	val totalResults: Int? = null
-)
+) : Parcelable
 
+@Parcelize
 data class ResultsItem(
 
 	@field:SerializedName("overview")
@@ -60,4 +65,4 @@ data class ResultsItem(
 
 	@field:SerializedName("vote_count")
 	val voteCount: Int? = null
-)
+) : Parcelable
