@@ -41,7 +41,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
         root = inflater.inflate(R.layout.fragment_films, container, false)
@@ -100,8 +100,8 @@ class HomeFragment : Fragment() {
 
     private fun downloadByUrl() {
         GlobalScope.launch {
-            var response: String =
-                URL("https://api.themoviedb.org/3/movie/now_playing?api_key=d866b8cb9d02a5fc365da1327bc3f464&language=ru&page=1")
+            val response: String =
+                URL("https://api.themoviedb.org/3/movie/popular?api_key=d866b8cb9d02a5fc365da1327bc3f464&language=ru&page=1")
                     .readText()
             val gson = Gson()
             jsonFilms = gson.fromJson(response, Response::class.java)
@@ -110,8 +110,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun layoutAnimation(recyclerView: RecyclerView) {
-        var context = recyclerView.context
-        var layoutAnimationController =
+        val context = recyclerView.context
+        val layoutAnimationController =
             AnimationUtils.loadLayoutAnimation(context, R.anim.layout_slide_right)
         recyclerView.layoutAnimation = layoutAnimationController
         recyclerView.adapter?.notifyDataSetChanged()

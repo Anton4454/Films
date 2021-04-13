@@ -12,15 +12,17 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.films.R
 import com.example.films.ResultsItem
+import com.jgabrielfreitas.core.BlurImageView
 import kotlinx.android.synthetic.main.fragment_film_page.view.*
 
 
 class FilmPageFragment : Fragment() {
 
-    protected lateinit var root: View
-    protected lateinit var jsonFilm: ResultsItem
-    protected lateinit var fragmentBack: ImageView
-    protected var position: Int = 0
+    private lateinit var root: View
+    private lateinit var jsonFilm: ResultsItem
+    private lateinit var fragmentBack: BlurImageView
+    private lateinit var filmPhoto: ImageView
+    private var position: Int = 0
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreateView(
@@ -30,6 +32,7 @@ class FilmPageFragment : Fragment() {
     ): View? {
         root = inflater.inflate(R.layout.fragment_film_page, container, false)
         fragmentBack = root.fragment_back
+        filmPhoto = root.filmPhoto
         val bundle = this.arguments
         if (bundle != null) {
             jsonFilm = bundle.getParcelable<ResultsItem>("films")!!
@@ -49,10 +52,20 @@ class FilmPageFragment : Fragment() {
             )
             .override(400, 600)
             .into(fragmentBack)
+
+        Glide
+            .with(requireContext())
+            .load(
+                "https://themoviedb.org/t/p/w600_and_h900_face" + jsonFilm.posterPath
+            )
+            .override(400, 600)
+            .into(filmPhoto)
+
         /*root.btn.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }*/
 
+        fragmentBack.setBlur(4)
         return root
     }
 }
