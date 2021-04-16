@@ -101,7 +101,7 @@ class HomeFragment : Fragment() {
     private fun downloadByUrl() {
         GlobalScope.launch {
             val response: String =
-                URL("https://api.themoviedb.org/3/movie/popular?api_key=d866b8cb9d02a5fc365da1327bc3f464&language=ru&page=1")
+                URL("https://api.themoviedb.org/3/movie/popular?api_key=d866b8cb9d02a5fc365da1327bc3f464&language=en&page=1")
                     .readText()
             val gson = Gson()
             jsonFilms = gson.fromJson(response, Response::class.java)

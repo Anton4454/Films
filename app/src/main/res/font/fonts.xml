@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <font weight="400" style="normal">NotoSansThai-Regular.ttf</font>
+    <font weight="700" style="normal">NotoSansThai-Bold.ttf</font>
+    <font weight="400" style="normal" fallbackFor="serif">NotoSerifThai-Regular.ttf</font>
+    <font weight="700" style="normal" fallbackFor="serif">NotoSerifThai-Bold.ttf</font>
+</font-family>

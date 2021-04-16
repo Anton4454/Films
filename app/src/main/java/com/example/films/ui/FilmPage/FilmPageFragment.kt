@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.films.R
@@ -22,6 +23,7 @@ class FilmPageFragment : Fragment() {
     private lateinit var jsonFilm: ResultsItem
     private lateinit var fragmentBack: BlurImageView
     private lateinit var filmPhoto: ImageView
+    private lateinit var title: TextView
     private var position: Int = 0
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -33,6 +35,7 @@ class FilmPageFragment : Fragment() {
         root = inflater.inflate(R.layout.fragment_film_page, container, false)
         fragmentBack = root.fragment_back
         filmPhoto = root.filmPhoto
+        title = root.title
         val bundle = this.arguments
         if (bundle != null) {
             jsonFilm = bundle.getParcelable<ResultsItem>("films")!!
@@ -61,6 +64,7 @@ class FilmPageFragment : Fragment() {
             .override(400, 600)
             .into(filmPhoto)
 
+        title.text = jsonFilm.title
         /*root.btn.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }*/
