@@ -28,8 +28,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.net.URL
 
-
-@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class HomeFragment : Fragment() {
 
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -111,7 +109,7 @@ class HomeFragment : Fragment() {
                             bundle.putParcelable("films", jsonFilms.results?.get(position))
                             bundle.putInt("position", position)
                             fragment.setArguments(bundle)
-                            Toast.makeText(requireContext(), response, Toast.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(), response.toString(), Toast.LENGTH_LONG).show()
                             replace(R.id.nav_host_fragment, fragment)
                             addToBackStack(null)
                         }
@@ -134,7 +132,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun layoutAnimation(recyclerView: RecyclerView) {
+   /* private fun layoutAnimation(recyclerView: RecyclerView) {
         val context = recyclerView.context
         val layoutAnimationController =
             AnimationUtils.loadLayoutAnimation(context, R.anim.layout_slide_right)
@@ -142,7 +140,7 @@ class HomeFragment : Fragment() {
         recyclerView.adapter?.notifyDataSetChanged()
         recyclerView.scheduleLayoutAnimation()
     }
-
+*/
     private val parseIsReady: Runnable = object : Runnable {
         override fun run() {
             if (jsonFilms.results?.size!! < 20) {
