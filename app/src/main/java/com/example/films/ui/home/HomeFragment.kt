@@ -2,11 +2,13 @@ package com.example.films.ui.home
 
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +24,8 @@ import com.google.gson.Gson
 import jp.wasabeef.recyclerview.adapters.SlideInRightAnimationAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.net.URL
 
 
@@ -36,12 +40,31 @@ class HomeFragment : Fragment() {
     private lateinit var root: View
     private var mHandler = Handler()
     private val fragment: Fragment = FilmPageFragment()
+    private lateinit var request: okhttp3.Request
+    private lateinit var response: okhttp3.Response
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val thread = Thread {
+            try {
+
+                val client = OkHttpClient()
+                request = Request.Builder()
+                    .url("https://imdb8.p.rapidapi.com/title/get-most-popular-movies?homeCountry=US&purchaseCountry=US&currentCountry=US")
+                    .get()
+                    .addHeader("x-rapidapi-key", "2c70749e73mshbb648cb440852a1p1f76fbjsncc89d40cc767")
+                    .addHeader("x-rapidapi-host", "imdb8.p.rapidapi.com")
+                    .build()
+
+                response = client.newCall(request).execute()
+            } catch (e: Exception) {
+                Log.e("ERROR", e.message)
+            }
+        }
+        thread.start()
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
         root = inflater.inflate(R.layout.fragment_films, container, false)
@@ -87,6 +110,7 @@ class HomeFragment : Fragment() {
                             bundle.putParcelable("films", jsonFilms.results?.get(position))
                             bundle.putInt("position", position)
                             fragment.setArguments(bundle)
+                            Toast.makeText(requireContext(), response, Toast.LENGTH_LONG).show()
                             replace(R.id.nav_host_fragment, fragment)
                             addToBackStack(null)
                         }
