@@ -132,15 +132,15 @@ class HomeFragment : Fragment() {
         }
     }
 
-   /* private fun layoutAnimation(recyclerView: RecyclerView) {
+   /*private fun layoutAnimation(recyclerView: RecyclerView) {
         val context = recyclerView.context
         val layoutAnimationController =
             AnimationUtils.loadLayoutAnimation(context, R.anim.layout_slide_right)
         recyclerView.layoutAnimation = layoutAnimationController
         recyclerView.adapter?.notifyDataSetChanged()
         recyclerView.scheduleLayoutAnimation()
-    }
-*/
+    }*/
+
     private val parseIsReady: Runnable = object : Runnable {
         override fun run() {
             if (jsonFilms.results?.size!! < 20) {
