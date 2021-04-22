@@ -29,6 +29,7 @@ import okhttp3.Request
 import java.net.URL
 
 
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class HomeFragment : Fragment() {
 
     private lateinit var linearLayoutManager: LinearLayoutManager
