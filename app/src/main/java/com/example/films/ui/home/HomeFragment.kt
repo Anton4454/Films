@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -18,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.films.FilmAdapter
 import com.example.films.R
 import com.example.films.Response
+import com.example.films.TopRatedMovies
 import com.example.films.ui.ClickListener.RecyclerItemClickListener
 import com.example.films.ui.FilmPage.FilmPageFragment
 import com.google.gson.Gson
@@ -36,11 +36,12 @@ class HomeFragment : Fragment() {
     private lateinit var adapter: FilmAdapter
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var jsonFilms: Response
+    private var topRatedMovies: List<TopRatedMovies> = emptyList()
     private lateinit var root: View
     private var mHandler = Handler()
     private val fragment: Fragment = FilmPageFragment()
     private lateinit var request: okhttp3.Request
-    private lateinit var response: okhttp3.Response
+    private lateinit var response_top_rated: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,20 +50,20 @@ class HomeFragment : Fragment() {
     ): View {
         val thread = Thread {
             try {
-
                 val client = OkHttpClient()
                 request = Request.Builder()
-                    .url("https://imdb8.p.rapidapi.com/title/get-most-popular-movies?homeCountry=US&purchaseCountry=US&currentCountry=US")
+                    .url("https://imdb8.p.rapidapi.com/title/get-top-rated-movies")
                     .get()
                     .addHeader("x-rapidapi-key", "2c70749e73mshbb648cb440852a1p1f76fbjsncc89d40cc767")
                     .addHeader("x-rapidapi-host", "imdb8.p.rapidapi.com")
                     .build()
 
-                response = client.newCall(request).execute()
+                response_top_rated = client.newCall(request).execute().toString()
             } catch (e: Exception) {
                 Log.e("ERROR", e.message)
             }
         }
+
         thread.start()
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
@@ -109,7 +110,7 @@ class HomeFragment : Fragment() {
                             bundle.putParcelable("films", jsonFilms.results?.get(position))
                             bundle.putInt("position", position)
                             fragment.setArguments(bundle)
-                            Toast.makeText(requireContext(), response.toString(), Toast.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(), topRatedMovies!![0].id, Toast.LENGTH_LONG).show()
                             replace(R.id.nav_host_fragment, fragment)
                             addToBackStack(null)
                         }
