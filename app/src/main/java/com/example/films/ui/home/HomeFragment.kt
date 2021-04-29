@@ -109,8 +109,8 @@ class HomeFragment : Fragment() {
                 URL("https://api.themoviedb.org/3/movie/popular?api_key=d866b8cb9d02a5fc365da1327bc3f464&language=en&page=1")
                     .toString()
             val gson = Gson()
-//            jsonFilms = gson.fromJson(response, Response::class.java)
-           // mHandler.postDelayed(parseIsReady, 0)
+            //jsonFilms = gson.fromJson(response, Response::class.java)
+            //mHandler.postDelayed(parseIsReady, 0)
         }
     }
 

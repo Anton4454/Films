@@ -15,8 +15,7 @@ import okhttp3.Request
 
 class SplashActivity : AppCompatActivity() {
     private lateinit var lottieAnimationView: LottieAnimationView
-
-    private lateinit var request: okhttp3.Request
+    private lateinit var request: Request
     private lateinit var jsonFilmsResponse: okhttp3.Response
     private var mHandler = Handler()
     private val gson = Gson()
@@ -38,8 +37,8 @@ class SplashActivity : AppCompatActivity() {
                     .build()
 
                 GlobalScope.launch {
-                    jsonFilmsResponse = client.newCall(request!!).execute()
-                    mHandler.postDelayed(initResponse, 100)
+                    jsonFilmsResponse = client.newCall(request).execute()
+                    mHandler.postDelayed(initResponse, 0)
                 }
             } catch (e: Exception) {
                 Log.e("Error", e.message)
@@ -66,7 +65,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun downloadByUrl() {
         GlobalScope.launch {
-            jsonFilms = gson.fromJson(jsonFilmsResponse.toString(), TopRatedMovies::class.java)
+            jsonFilms = gson.fromJson(jsonFilmsResponse, TopRatedMovies::class.java)
             mHandler.postDelayed(parseIsReady, 100)
         }
     }
@@ -86,11 +85,17 @@ class SplashActivity : AppCompatActivity() {
             if (jsonFilms == null) {
                 mHandler.postDelayed(this, 100)
             } else {
-                Toast.makeText(this@SplashActivity, jsonFilms!!.id.toString(), Toast.LENGTH_LONG).show()
+                Toast.makeText(this@SplashActivity, jsonFilms!!.id.toString(), Toast.LENGTH_LONG)
+                    .show()
                 startActivity(
                     Intent(
                         this@SplashActivity, MainActivity::class.java
                     )
+                )
+
+                overridePendingTransition(
+                    R.transition.fade_in_transition,
+                    R.transition.fade_out_transition
                 )
             }
         }
