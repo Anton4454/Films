@@ -40,36 +40,17 @@ class HomeFragment : Fragment() {
     private lateinit var root: View
     private var mHandler = Handler()
     private val fragment: Fragment = FilmPageFragment()
-    private lateinit var request: okhttp3.Request
-    private lateinit var response_top_rated: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val thread = Thread {
-            try {
-                val client = OkHttpClient()
-                request = Request.Builder()
-                    .url("https://imdb8.p.rapidapi.com/title/get-top-rated-movies")
-                    .get()
-                    .addHeader("x-rapidapi-key", "2c70749e73mshbb648cb440852a1p1f76fbjsncc89d40cc767")
-                    .addHeader("x-rapidapi-host", "imdb8.p.rapidapi.com")
-                    .build()
-
-                response_top_rated = client.newCall(request).execute().toString()
-            } catch (e: Exception) {
-                Log.e("ERROR", e.message)
-            }
-        }
-
-        thread.start()
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
         root = inflater.inflate(R.layout.fragment_films, container, false)
         recyclerView = root.findViewById(R.id.recyclerView)
-        downloadByUrl()
+        //downloadByUrl()
         return root
     }
 
@@ -128,8 +109,8 @@ class HomeFragment : Fragment() {
                 URL("https://api.themoviedb.org/3/movie/popular?api_key=d866b8cb9d02a5fc365da1327bc3f464&language=en&page=1")
                     .toString()
             val gson = Gson()
-            jsonFilms = gson.fromJson(response, Response::class.java)
-            mHandler.postDelayed(parseIsReady, 0)
+//            jsonFilms = gson.fromJson(response, Response::class.java)
+           // mHandler.postDelayed(parseIsReady, 0)
         }
     }
 
@@ -142,7 +123,7 @@ class HomeFragment : Fragment() {
         recyclerView.scheduleLayoutAnimation()
     }*/
 
-    private val parseIsReady: Runnable = object : Runnable {
+   /* private val parseIsReady: Runnable = object : Runnable {
         override fun run() {
             if (jsonFilms.results?.size!! < 20) {
                 mHandler.postDelayed(this, 100)
@@ -151,7 +132,7 @@ class HomeFragment : Fragment() {
                 createRecyclerView(adapter)
             }
         }
-    }
+    }*/
 
     override fun onDestroyView() {
         super.onDestroyView()

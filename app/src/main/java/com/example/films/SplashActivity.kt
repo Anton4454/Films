@@ -3,32 +3,50 @@ package com.example.films
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import kotlinx.coroutines.GlobalScope
 import android.util.Log
-import com.google.gson.Gson
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.lottie.LottieAnimationView
+import com.google.gson.Gson
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import java.net.URL
 
 class SplashActivity : AppCompatActivity() {
     private lateinit var lottieAnimationView: LottieAnimationView
-    private var jsonFilmsString: okhttp3.Response? = null
+
+    private lateinit var request: okhttp3.Request
+    private lateinit var jsonFilmsResponse: okhttp3.Response
     private var mHandler = Handler()
-    private lateinit var jsonFilms: TopRatedMovies
-    private var request: Request? = null
+    private val gson = Gson()
+    private var jsonFilms: TopRatedMovies? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash)
-        downloadByUrl()
+        val thread = Thread {
+            try {
+                val client = OkHttpClient()
+                request = Request.Builder()
+                    .url("https://imdb8.p.rapidapi.com/title/get-top-rated-movies")
+                    .get()
+                    .addHeader(
+                        "x-rapidapi-key",
+                        "2c70749e73mshbb648cb440852a1p1f76fbjsncc89d40cc767"
+                    )
+                    .addHeader("x-rapidapi-host", "imdb8.p.rapidapi.com")
+                    .build()
 
-        /*startActivity(
-                  Intent(
-                      this@SplashActivity, MainActivity::class.java
-                  )
-              )*/
+                GlobalScope.launch {
+                    jsonFilmsResponse = client.newCall(request!!).execute()
+                    mHandler.postDelayed(initResponse, 100)
+                }
+            } catch (e: Exception) {
+                Log.e("Error", e.message)
+            }
+        }
+
+        thread.start()
         lottieAnimationView = findViewById(R.id.lottie_splash)
         Handler().postDelayed({
             startActivity(
@@ -48,28 +66,33 @@ class SplashActivity : AppCompatActivity() {
 
     private fun downloadByUrl() {
         GlobalScope.launch {
-            val client = OkHttpClient()
-            request = Request.Builder()
-                .url("https://imdb8.p.rapidapi.com/title/get-top-rated-movies")
-                .get()
-                .addHeader(
-                    "x-rapidapi-key",
-                    "2c70749e73mshbb648cb440852a1p1f76fbjsncc89d40cc767"
-                )
-                .addHeader("x-rapidapi-host", "imdb8.p.rapidapi.com")
-                .build()
+            jsonFilms = gson.fromJson(jsonFilmsResponse.toString(), TopRatedMovies::class.java)
+            mHandler.postDelayed(parseIsReady, 100)
+        }
+    }
 
-
-
-            val gson = Gson()
-            jsonFilmsString = client.newCall(request!!).execute()
-            jsonFilms = gson.fromJson(jsonFilmsString.toString(), TopRatedMovies::class.java)
-            mHandler.postDelayed(parseIsReady, 0)
+    private val initResponse: Runnable = object : Runnable {
+        override fun run() {
+            if (jsonFilmsResponse == null) {
+                mHandler.postDelayed(this, 100)
+            } else {
+                downloadByUrl()
+            }
         }
     }
 
     private val parseIsReady: Runnable = object : Runnable {
         override fun run() {
+            if (jsonFilms == null) {
+                mHandler.postDelayed(this, 100)
+            } else {
+                Toast.makeText(this@SplashActivity, jsonFilms!!.id.toString(), Toast.LENGTH_LONG).show()
+                startActivity(
+                    Intent(
+                        this@SplashActivity, MainActivity::class.java
+                    )
+                )
+            }
         }
     }
 }
