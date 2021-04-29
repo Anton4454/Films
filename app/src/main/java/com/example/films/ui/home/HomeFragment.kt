@@ -126,7 +126,7 @@ class HomeFragment : Fragment() {
         GlobalScope.launch {
             val response: String =
                 URL("https://api.themoviedb.org/3/movie/popular?api_key=d866b8cb9d02a5fc365da1327bc3f464&language=en&page=1")
-                    .readText()
+                    .toString()
             val gson = Gson()
             jsonFilms = gson.fromJson(response, Response::class.java)
             mHandler.postDelayed(parseIsReady, 0)
