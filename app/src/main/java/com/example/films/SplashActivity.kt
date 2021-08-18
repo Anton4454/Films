@@ -85,7 +85,7 @@ class SplashActivity : AppCompatActivity() {
             if (jsonFilms == null) {
                 mHandler.postDelayed(this, 100)
             } else {
-                Toast.makeText(this@SplashActivity, jsonFilms!!.id.toString(), Toast.LENGTH_LONG)
+                Toast.makeText(this@SplashActivity, jsonFilms!!.id, Toast.LENGTH_LONG)
                     .show()
                 startActivity(
                     Intent(

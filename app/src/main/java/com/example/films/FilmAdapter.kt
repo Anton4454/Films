@@ -24,9 +24,8 @@ class FilmAdapter(private val films: Response?) :
 
     override fun getItemCount(): Int = films?.results?.size!!
 
-    override fun getItemId(position: Int): Long {
-        return super.getItemId(position)
-    }
+
+
     override fun onBindViewHolder(holder: PhotoHolder, position: Int) {
         val itemFilm = films?.results?.get(position)
         holder.bindPhoto(itemFilm, position)
@@ -100,7 +99,7 @@ class FilmAdapter(private val films: Response?) :
                 53 -> return "триллер"
                 10752 -> return "военный"
                 37 -> return "вестерн"
-                else -> return "lox"
+                else -> return ""
             }
         }
     }
